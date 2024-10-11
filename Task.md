@@ -23,7 +23,7 @@ It is important to know what storage solution is suitable,for what use cases, fo
 ## Step By Step Procedure
 # 1. Partitioning and Mounting
 1. Spin up a new EC2 instance with RHEL Linux 8 Operating System and name it as NFS (Network File System) then create and attach 3 volumes to it ![reference image](/Pictures/pic27.PNG). Make sure they're in the same zone for you to be able to attach them.
-2. Coonect to your terminal and prepare the NFS Server,start by partitioning your disks ![reference image](/Pictures/pic2.PNG), then install *lvm2* ![reference image](/Pictures/pic4.PNG), create *pvs* ![reference image](/Pictures/pic5.PNG), create *vgs* ![reference image](/Pictures/pic7.PNG), create *lvs* [reference image](/Pictures/pic8.PNG) then  configure LVM in the server by formatting the disk as xfs.![reference image](/Pictures/pic9.PNG)
+2. Coonect to your terminal and prepare the NFS Server,start by partitioning your disks ![reference image](/Pictures/pic2.PNG), then install *lvm2* ![reference image](/Pictures/pic4.PNG), create *pvs* ![reference image](/Pictures/pic5.PNG), create *vgs* ![reference image](/Pictures/pic7.PNG), create *lvs* ![reference image](/Pictures/pic8.PNG) then  configure LVM in the server by formatting the disk as xfs.![reference image](/Pictures/pic9.PNG)
 3. Mount the logical volume and verify it was successfully mounted ![reference image](/Pictures/pic10.PNG)
 4. Run *sudo blkid* to get the UUID of the mount part, open and paste the UUID in the fstab file using *sudo vi /etc/fstab* ![reference image](/Pictures/pic11.PNG) 
 5. Relaod daemon using *sudo mount -a*  and *sudo systemctl daemon-reload*
@@ -32,8 +32,7 @@ It is important to know what storage solution is suitable,for what use cases, fo
 # 2. Install NFS server, configure it to start on reboot and make sure it is u and running 
 1. Run update using *sudo yum -y update*
 2. Then install the NFS Server using *sudo yum install nfs-utils -y*
-3. finally start, enable and check the status using *sudo systemctl start nfs-server.service*, *
-sudo systemctl enable nfs-server.service* and *sudo systemctl status nfs-server.service* ![reference image](/Pictures/pic12.PNG)  ![reference image](/Pictures/pic13.PNG)
+3. finally start, enable and check the status using *sudo systemctl start nfs-server.service*, *sudo systemctl enable nfs-server.service* and *sudo systemctl status nfs-server.service* ![reference image](/Pictures/pic12.PNG)  ![reference image](/Pictures/pic13.PNG)
 **NOTE**:  If the output of the systemctl status nfs-server.service command shows that the NFS service is "active (exited)", it means that the service is running, but it is not currently doing anything. This is normal behavior for the NFS service when there are no active NFS client connections.
 5. Export the mounts for webservers *subnet cidr* to connect as clients. For simplicity, you will install your all three Web Servers inside the same subnet, but in production set up you would probably want to separate each tier inside its own subnet for higher level of security. To check your *subnet cidr* - open your EC2 details in AWS web console and locate 'Networking' tab and open a Subnet link and you should see this ![reference image](/Pictures/pic14.PNG)
 6. Setup that will allow the web server to read, write and execute files on NFS and restart the NFS server using ![reference image](/Pictures/pic15.PNG)
